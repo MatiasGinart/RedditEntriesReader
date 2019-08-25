@@ -22,7 +22,9 @@ struct RedditEntry: Decodable {
 
     enum DataCodingKeys: String, CodingKey {
         case id
-        case authorName = "author_fullname"
+        // TODO: Seems this is just an id... need to check the api in more detail (not in these 5 hours though)
+//        case authorName = "author_fullname"
+        case authorName = "subreddit"
         case title
         case numberOfComments = "num_comments"
         case created
