@@ -15,30 +15,19 @@ class TopEntryListViewController: UITableViewController {
     var topEntriesService: RedditTopEntriesService? = nil
     var redditEntryManager: RedditEntryManager = RedditEntryManager()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.tableFooterView = UIView()
-//        navigationItem.leftBarButtonItem = editButtonItem
-//
-//        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-//        navigationItem.rightBarButtonItem = addButton
-//        if let split = splitViewController {
-//            let controllers = split.viewControllers
-//            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-//        }
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
 
         showLoadingView()
+        self.tableView.tableFooterView?.isHidden = true
 
         // In viewWillAppear so we can ge the latest entries
         topEntriesService = RedditTopEntriesService()
         topEntriesService?.makeRequest(callback: { (response, error) in
             DispatchQueue.main.async {
                 self.hideLoadingView()
+                self.tableView.tableFooterView?.isHidden = false
             }
 
             guard let topEntriesData = response?.data else {
@@ -100,6 +89,14 @@ extension TopEntryListViewController {
     }
 }
 
+// MARK: - Dismiss methods
+extension TopEntryListViewController {
+    @IBAction func dismissAll() {
+        
+    }
+}
+
+// MARK: - Private methods
 extension TopEntryListViewController {
     // Just in case we need to do something else tomorrow (happened more than once in my lifetime)
     private func reloadData() {
