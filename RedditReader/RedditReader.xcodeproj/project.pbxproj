@@ -20,7 +20,7 @@
 		6142A8D72313370F00D77559 /* UIImageView+Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6142A8D62313370F00D77559 /* UIImageView+Download.swift */; };
 		61DF72A7231315AB00A5537C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DF72A6231315AB00A5537C /* AppDelegate.swift */; };
 		61DF72A9231315AB00A5537C /* TopEntryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DF72A8231315AB00A5537C /* TopEntryListViewController.swift */; };
-		61DF72AB231315AB00A5537C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DF72AA231315AB00A5537C /* DetailViewController.swift */; };
+		61DF72AB231315AB00A5537C /* RedditEntryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DF72AA231315AB00A5537C /* RedditEntryDetailViewController.swift */; };
 		61DF72AE231315AB00A5537C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61DF72AC231315AB00A5537C /* Main.storyboard */; };
 		61DF72B0231315AC00A5537C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61DF72AF231315AC00A5537C /* Assets.xcassets */; };
 		61DF72B3231315AC00A5537C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61DF72B1231315AC00A5537C /* LaunchScreen.storyboard */; };
@@ -60,7 +60,7 @@
 		61DF72A3231315AB00A5537C /* RedditReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedditReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61DF72A6231315AB00A5537C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61DF72A8231315AB00A5537C /* TopEntryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopEntryListViewController.swift; sourceTree = "<group>"; };
-		61DF72AA231315AB00A5537C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		61DF72AA231315AB00A5537C /* RedditEntryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditEntryDetailViewController.swift; sourceTree = "<group>"; };
 		61DF72AD231315AB00A5537C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		61DF72AF231315AC00A5537C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61DF72B2231315AC00A5537C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -159,9 +159,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		6142A8D8231344DF00D77559 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				61DF72AA231315AB00A5537C /* RedditEntryDetailViewController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		61DF729A231315AA00A5537C = {
 			isa = PBXGroup;
 			children = (
+				6142A8D8231344DF00D77559 /* Detail */,
 				6142A897231332A900D77559 /* Extensions */,
 				6142A894231331B300D77559 /* TopEntryManager */,
 				6142A88D23132EB600D77559 /* TopEntryList */,
@@ -190,7 +199,6 @@
 			isa = PBXGroup;
 			children = (
 				61DF72A6231315AB00A5537C /* AppDelegate.swift */,
-				61DF72AA231315AB00A5537C /* DetailViewController.swift */,
 				61DF72AC231315AB00A5537C /* Main.storyboard */,
 				61DF72AF231315AC00A5537C /* Assets.xcassets */,
 				61DF72B1231315AC00A5537C /* LaunchScreen.storyboard */,
@@ -352,7 +360,7 @@
 				6142A899231332B600D77559 /* Date+TimeAgo.swift in Sources */,
 				6142A88923132ACC00D77559 /* ErrorPresenter.swift in Sources */,
 				6142A8822313204E00D77559 /* RedditTopEntriesResponse.swift in Sources */,
-				61DF72AB231315AB00A5537C /* DetailViewController.swift in Sources */,
+				61DF72AB231315AB00A5537C /* RedditEntryDetailViewController.swift in Sources */,
 				61DF72A9231315AB00A5537C /* TopEntryListViewController.swift in Sources */,
 				6142A89323132FB500D77559 /* ReadView.swift in Sources */,
 				6142A88C23132AF600D77559 /* Loadeable.swift in Sources */,

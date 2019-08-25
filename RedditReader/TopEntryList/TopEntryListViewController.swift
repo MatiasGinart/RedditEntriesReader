@@ -10,7 +10,7 @@ import UIKit
 
 class TopEntryListViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
+    var detailViewController: RedditEntryDetailViewController? = nil
     var entries: [RedditEntry]?
     var topEntriesService: RedditTopEntriesService? = nil
     var redditEntryManager: RedditEntryManager = RedditEntryManager()
@@ -27,7 +27,6 @@ class TopEntryListViewController: UITableViewController {
         topEntriesService?.makeRequest(callback: { (response, error) in
             DispatchQueue.main.async {
                 self.hideLoadingView()
-                self.tableView.tableFooterView?.isHidden = false
             }
 
             guard let topEntriesData = response?.data else {
@@ -49,15 +48,17 @@ class TopEntryListViewController: UITableViewController {
 
     // MARK: - Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
-//            if let indexPath = tableView.indexPathForSelectedRow {
-//                let object = objects[indexPath.row] as! NSDate
-//                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-//                controller.detailItem = object
-//                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-//                controller.navigationItem.leftItemsSupplementBackButton = true
-//            }
+        guard
+            let indexPath = tableView.indexPathForSelectedRow,
+            let entry = entries?[indexPath.row],
+            let controller = (segue.destination as? UINavigationController)?.topViewController as? RedditEntryDetailViewController
+        else {
+            return
         }
+
+        controller.redditEntry = entry
+        controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        controller.navigationItem.leftItemsSupplementBackButton = true
     }
 }
 
@@ -87,6 +88,10 @@ extension TopEntryListViewController {
 
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "EntryDetail", sender: self)
+    }
 }
 
 // MARK: - Dismiss methods
@@ -101,6 +106,7 @@ extension TopEntryListViewController {
     // Just in case we need to do something else tomorrow (happened more than once in my lifetime)
     private func reloadData() {
         tableView.reloadData()
+        self.tableView.tableFooterView?.isHidden = false
     }
 
     // Should go in a viewModel or some helper

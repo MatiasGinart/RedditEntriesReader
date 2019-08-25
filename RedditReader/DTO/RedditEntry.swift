@@ -15,6 +15,7 @@ struct RedditEntry: Decodable {
     let numberOfComments: Int?
     let created: Date?
     let thumbnail: String?
+    let image: String?
 
     enum CodingKeys: String, CodingKey {
         case data
@@ -29,6 +30,7 @@ struct RedditEntry: Decodable {
         case numberOfComments = "num_comments"
         case created
         case thumbnail
+        case url
     }
     
     init(from decoder: Decoder) throws {
@@ -40,6 +42,7 @@ struct RedditEntry: Decodable {
         title = try dataContainer.decode(String.self, forKey: .title)
         numberOfComments = try? dataContainer.decodeIfPresent(Int.self, forKey: .numberOfComments)
         thumbnail = try? dataContainer.decodeIfPresent(String.self, forKey: .thumbnail)
+        image = try? dataContainer.decodeIfPresent(String.self, forKey: .url)
         
         // TODO: Remember how to decode with formatter if i have spare time
         if let createdTimestamp = try? dataContainer.decode(TimeInterval.self, forKey: .created) {
