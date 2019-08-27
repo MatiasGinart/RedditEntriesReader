@@ -10,30 +10,35 @@ import Foundation
 
 typealias RedditTopEntriesServiceCallback = (RedditTopEntriesResponse?, Error?) -> ()
 
+enum RedditTopEntriesServiceError: Error {
+    case invalidURL
+    case parseError
+}
+
 struct RedditTopEntriesService {
     private var task: URLSessionDataTask?
 
     mutating func makeRequest(callback: @escaping RedditTopEntriesServiceCallback, numberOfEntries: Int = 50) {
         guard var urlComponents = URLComponents(string: "https://www.reddit.com/top.json") else {
-            callback(nil, nil)
+            callback(nil, RedditTopEntriesServiceError.invalidURL)
             return
         }
         urlComponents.queryItems = [URLQueryItem(name: "limit", value: String(numberOfEntries))]
 
         guard let url = urlComponents.url else {
-            callback(nil, nil)
+            callback(nil, RedditTopEntriesServiceError.invalidURL)
             return
         }
 
         let session = URLSession.shared
         task = session.dataTask(with: url) { (data, response, error) in
             guard let networingData = data else {
-                callback(nil, nil)
+                callback(nil, error)
                 return
             }
 
             guard let entriesResponse =  try? JSONDecoder().decode(RedditTopEntriesResponse.self, from: networingData) else {
-                callback(nil, nil)
+                callback(nil, RedditTopEntriesServiceError.parseError)
                 return
             }
 

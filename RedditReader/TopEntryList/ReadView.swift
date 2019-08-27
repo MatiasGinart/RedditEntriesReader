@@ -8,8 +8,6 @@
 
 import UIKit
 
-// ReadView has always the same color
-// TODO: Find a way to disallow setting the background color
 class ReadView: UIView {
     private struct Constants {
         static let readColor = UIColor(red: 46/255, green: 122/255, blue: 246/255, alpha: 1)
