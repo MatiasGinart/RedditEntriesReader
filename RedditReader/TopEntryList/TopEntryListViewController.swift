@@ -15,8 +15,15 @@ class TopEntryListViewController: UITableViewController {
     var topEntriesService: RedditTopEntriesService? = nil
     var redditEntryManager: RedditEntryManager = RedditEntryManager()
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        createRefreshControl()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        guard entries == nil else { return }
         invokeService()
     }
 
@@ -57,7 +64,7 @@ extension TopEntryListViewController {
         cell.titleEntryLabel.text = redditEntry.title
         cell.numberOfCommentsLabel.text = numberOfCommentsText(forNumberOfComments: redditEntry.numberOfComments)
         cell.dismissClossure = { [weak self] (_) in
-            
+            self?.dismiss(entry: redditEntry)
         }
 
         return cell
@@ -72,26 +79,43 @@ extension TopEntryListViewController {
     }
 }
 
+// MARK: - View methods
+extension TopEntryListViewController {
+    private func createRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl?.attributedTitle = NSAttributedString(string: "Reload")
+        refreshControl?.addTarget(self, action: #selector(invokeService), for: UIControl.Event.valueChanged)
+    }
+}
+
 // MARK: - Dismiss methods
 extension TopEntryListViewController {
     @IBAction func dismissAll() {
-        
+        entries?.removeAll()
+        reloadData()
+    }
+
+    private func dismiss(entry: RedditEntry) {
+        entries?.removeAll{ $0 == entry }
+        tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
     }
 }
 
 // MARK: - Private methods
 extension TopEntryListViewController {
-    private func invokeService() {
-        guard entries == nil else { return }
-        
-        showLoadingView()
+    @objc private func invokeService() {
+        if self.refreshControl?.isRefreshing == false {
+            showLoadingView()
+        }
         self.tableView.tableFooterView?.isHidden = true
         
         // In viewWillAppear so we can ge the latest entries
         topEntriesService = RedditTopEntriesService()
         topEntriesService?.makeRequest(callback: { (response, error) in
             DispatchQueue.main.async {
-                self.hideLoadingView()
+                if self.refreshControl?.isRefreshing == false {
+                    self.hideLoadingView()
+                }
             }
             
             guard let topEntriesData = response?.data else {
@@ -102,6 +126,7 @@ extension TopEntryListViewController {
             
             DispatchQueue.main.async {
                 self.reloadData()
+                self.refreshControl?.endRefreshing()
             }
         })
     }
@@ -109,7 +134,7 @@ extension TopEntryListViewController {
     // Just in case we need to do something else tomorrow (happened more than once in my lifetime)
     private func reloadData() {
         tableView.reloadData()
-        self.tableView.tableFooterView?.isHidden = false
+        self.tableView.tableFooterView?.isHidden = entries?.count == 0
     }
 
     // Should go in a viewModel or some helper

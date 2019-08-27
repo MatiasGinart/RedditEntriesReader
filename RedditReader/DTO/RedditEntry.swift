@@ -52,3 +52,9 @@ struct RedditEntry: Decodable {
         }
     }
 }
+
+extension RedditEntry: Equatable {
+    static func == (lhs: RedditEntry, rhs: RedditEntry) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
