@@ -16,34 +16,8 @@ class TopEntryListViewController: UITableViewController {
     var redditEntryManager: RedditEntryManager = RedditEntryManager()
 
     override func viewWillAppear(_ animated: Bool) {
-        clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
-
-        showLoadingView()
-        self.tableView.tableFooterView?.isHidden = true
-
-        // In viewWillAppear so we can ge the latest entries
-        topEntriesService = RedditTopEntriesService()
-        topEntriesService?.makeRequest(callback: { (response, error) in
-            DispatchQueue.main.async {
-                self.hideLoadingView()
-            }
-
-            guard let topEntriesData = response?.data else {
-                self.presentError(message: "There was an error loading the messages")
-                return
-            }
-            self.entries = topEntriesData.children
-
-            DispatchQueue.main.async {
-                self.reloadData()
-            }
-        })
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        topEntriesService?.invalidate()
+        invokeService()
     }
 
     // MARK: - Segues
@@ -83,14 +57,18 @@ extension TopEntryListViewController {
         cell.titleEntryLabel.text = redditEntry.title
         cell.numberOfCommentsLabel.text = numberOfCommentsText(forNumberOfComments: redditEntry.numberOfComments)
         cell.dismissClossure = { [weak self] (_) in
-            // Do something with the array data and update the tableView
+            
         }
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let redditEntry = entries?[indexPath.row] {
+            redditEntryManager.redditEntryIsBeingRead(redditEntry)
+        }
         performSegue(withIdentifier: "EntryDetail", sender: self)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
 
@@ -103,6 +81,31 @@ extension TopEntryListViewController {
 
 // MARK: - Private methods
 extension TopEntryListViewController {
+    private func invokeService() {
+        guard entries == nil else { return }
+        
+        showLoadingView()
+        self.tableView.tableFooterView?.isHidden = true
+        
+        // In viewWillAppear so we can ge the latest entries
+        topEntriesService = RedditTopEntriesService()
+        topEntriesService?.makeRequest(callback: { (response, error) in
+            DispatchQueue.main.async {
+                self.hideLoadingView()
+            }
+            
+            guard let topEntriesData = response?.data else {
+                self.presentError(message: "There was an error loading the messages")
+                return
+            }
+            self.entries = topEntriesData.children
+            
+            DispatchQueue.main.async {
+                self.reloadData()
+            }
+        })
+    }
+
     // Just in case we need to do something else tomorrow (happened more than once in my lifetime)
     private func reloadData() {
         tableView.reloadData()

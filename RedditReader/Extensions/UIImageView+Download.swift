@@ -12,8 +12,7 @@ import UIKit
 // This needs a cache... if alamofire was added i could do it with that, else use NSCache (or some other tool). Not today (if this was not an exercise i would use some of this tools
 // But again... this was from stackoverflow (except from some minor changes), only 5 hours and i am not going to code this
 extension UIImageView {
-    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
-        contentMode = mode
+    func downloaded(from url: URL) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
                 let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
@@ -24,9 +23,10 @@ extension UIImageView {
             DispatchQueue.main.async() {
                 self.image = image
             }
-            }.resume()
+        }.resume()
     }
-    func downloaded(from link: String?, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+
+    func downloaded(from link: String?) {
         guard
             let urlString = link,
             let url = URL(string: urlString)
@@ -35,6 +35,6 @@ extension UIImageView {
             image = nil
             return
         }
-        downloaded(from: url, contentMode: mode)
+        downloaded(from: url)
     }
 }

@@ -13,7 +13,7 @@ typealias TopEntryDismissClossure = (TopEntryTableViewCell) -> ()
 // Yes, it is not generic. It is made for a top entry.
 // Haven't seen the rest of the DTOs in the apis, there may be some DTOs that can fulfill the same data, if it is, this should be made more generic, starting with all the names and later allowing flexibility with the read view and the dismiss action
 class TopEntryTableViewCell: UITableViewCell {
-    struct Constants {
+    private struct Constants {
         static let selectedBackgroundColor = UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 1)
         static let unselectedBackgroundColor = UIColor.black
     }

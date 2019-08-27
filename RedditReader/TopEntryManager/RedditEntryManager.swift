@@ -8,8 +8,27 @@
 
 import Foundation
 
-struct RedditEntryManager {
+class RedditEntryManager {
+    private struct Constants {
+        static let entriesKey = "entriesKey"
+    }
+
+    private var entriesSaved: [String]
+
+    init() {
+        entriesSaved = UserDefaults.standard.stringArray(forKey: Constants.entriesKey) ?? []
+    }
+
     func redditEntryWasRead(_ entry: RedditEntry) -> Bool {
-        return true
+        return entriesSaved.contains(entry.id)
+    }
+
+    func redditEntryIsBeingRead(_ entry: RedditEntry) {
+        entriesSaved.append(entry.id)
+    }
+
+    deinit {
+        UserDefaults.standard.set(entriesSaved, forKey: Constants.entriesKey)
+        UserDefaults.standard.synchronize()
     }
 }
