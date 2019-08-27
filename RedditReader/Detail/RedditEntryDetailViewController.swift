@@ -42,4 +42,24 @@ class RedditEntryDetailViewController: UIViewController {
         }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
+
+    @IBAction func saveToGallery() {
+        guard let image = entryImageView.image else {
+            presentMessage(message: "Ops, no image to save")
+            return
+        }
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+
+    }
+
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        guard error != nil else {
+            presentMessage(message: "Couldn't save image. Sorry!!")
+            return
+        }
+
+        presentMessage(message: "Image saved with the best success ever")
+    }
 }
+
+extension RedditEntryDetailViewController: MessagePresenter {}

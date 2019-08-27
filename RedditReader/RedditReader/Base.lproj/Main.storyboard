@@ -39,7 +39,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="RsI-6h-ime">
-                                <rect key="frame" x="8" y="96" width="398" height="208"/>
+                                <rect key="frame" x="8" y="96" width="398" height="278"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmV-me-cGr" userLabel="AuthorName">
                                         <rect key="frame" x="0.0" y="0.0" width="398" height="0.0"/>
@@ -60,6 +60,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leL-3M-1sy" userLabel="Save to gallery">
+                                        <rect key="frame" x="0.0" y="248" width="398" height="30"/>
+                                        <state key="normal" title="Save to camera roll"/>
+                                        <connections>
+                                            <action selector="saveToGallery" destination="JEX-9P-axG" eventType="touchUpInside" id="5Ue-nU-FXu"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>

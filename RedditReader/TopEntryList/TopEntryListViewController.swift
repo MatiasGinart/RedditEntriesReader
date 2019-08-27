@@ -119,7 +119,7 @@ extension TopEntryListViewController {
             }
             
             guard let topEntriesData = response?.data else {
-                self.presentError(message: "There was an error loading the messages")
+                self.presentMessage(message: "There was an error loading the messages")
                 return
             }
             self.entries = topEntriesData.children
@@ -156,6 +156,6 @@ extension TopEntryListViewController {
 }
 
 // MARK: Traits
-extension TopEntryListViewController: ErrorPresenter {}
+extension TopEntryListViewController: MessagePresenter {}
 extension TopEntryListViewController: Loadeable {}
 
